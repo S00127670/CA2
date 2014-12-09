@@ -1,0 +1,40 @@
+﻿@model S00127670_CA2.Models.Movie
+<div class="panel panel-info">
+    <div class="panel-heading" style="font-size:20px">@ViewBag.DA</div>
+
+    <table class="table table-borderd table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.movieTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.movieGenre)
+        </th>
+    </tr>
+
+         <tr>
+        <td>
+            @Html.DisplayFor(model => model.movieTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.movieGenre)
+        </td>
+    </tr>
+
+        </table>
+   
+    @using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+ <div class="panel-footer">
+            <a class="btn btn-primary"href="@Url.Action("Index")"><span class="glyphicon glyphicon-home"></span>&nbsp;Movie List</a>
+        </div>
+}
+        </div>
+@section Scripts {
+    <script>
+        $(function () {
+            toastr.info('Actor Details');
+        });
+    </script>
+}
+

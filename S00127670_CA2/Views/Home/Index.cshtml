@@ -1,0 +1,220 @@
+﻿@using System.Data
+@model IEnumerable<S00127670_CA2.Models.Movie>
+<div class="row">
+    <div class="col-xs-9">
+<div class="panel panel-primary">
+    <div class="panel-heading" style="font-size:20px">@ViewBag.PageTitle</div>
+    <div class="panel-body">
+        Click On Movie Title To Show Actors
+    </div>
+<table class="table table-borderd table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.movieTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.movieGenre)
+        </th>
+        <th style="text-align:center">
+            <a class="btn btn-xs btn-primary" href="@Url.Action("Index", new { sortActor = @ViewBag.numOrder })">
+                    @if (ViewBag.numOrder == "NumberDown")
+                    {
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    }
+                    else if (ViewBag.numOrder == "NumberUp")
+                    {
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        
+                    }
+                    &nbsp;# (Actors)
+                </a>
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+             <span class="btn btn-primary btn-xs" onclick="showActors('@item.movieId')">@Html.DisplayFor(modelItem => item.movieTitle)</span>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.movieGenre)
+        </td>
+        <td style="text-align:center">
+            @if (item.actors.Count == 0)
+                    {
+                        <p style="margin: 0px">No Actors</p>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.actors.Count)
+                    }
+        </td>
+        <td>
+            <span class="btn btn-warning btn-sm"onclick="editMovie('@item.movieId')">Edit</span>
+            <span class="btn btn-danger btn-sm"onclick="deleteMovie('@item.movieId')">Delete</span>
+        </td>
+    </tr>
+}
+
+</table>
+
+    <div class="panel-footer">
+          <a class="btn btn-success"href="@Url.Action("Create")"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add Movie</a>
+    </div>
+
+    
+  
+</div>
+        </div>
+    <div class="col-xs-2">
+        <a class="label label-primary" style="font-size:20px; margin-left:75px">Genre Split</a>
+        <canvas id="genreSplit" style="margin-top:30px"></canvas>
+        <div class="container" style="margin-left:55px; margin-top:20px">
+        <div style="margin-top:10px">
+        <p class="label" style="background-color:#FF8000; font-size:15px">Action (@ViewBag.Action)</p>
+            </div>
+        <div style="margin-top:10px">
+        <p class="label" style="background-color:#008000; font-size:15px;">Adventure (@ViewBag.Adventure)</p>
+            </div>
+        <div style="margin-top:10px">
+        <p class="label" style="background-color:#0000ff; font-size:15px">Animation (@ViewBag.Animation)</p>
+            </div>
+            <div style="margin-top:10px">
+        <p class="label" style="background-color:#FF0000; font-size:15px">Comedy (@ViewBag.Comedy)</p>
+                </div>
+        <div style="margin-top:10px">
+        <p class="label" style="background-color:#000000; font-size:15px">Horror (@ViewBag.Horror)</p>
+            </div>
+            </div>
+        </div>
+    </div>
+
+<div id="SH"></div>
+<div id="EM"></div>
+<div id="DM"></div>
+
+@section scripts
+{
+    <script>
+        function showActors(MovieId) {
+            $.ajax({
+                url: '@Url.Action("ActorsById")',
+                 data: { id: MovieId },
+                 success: function (data) {
+                     $('#SH').hide();
+                     $('#SH').html(data);
+                     $('#SH').animate({
+                         height: "toggle"
+                     }, 2000);
+                     toastr.info('Actor List Displayed Below');
+                     $('#EM').hide();
+                     $('#DM').hide();
+                 },
+                 error: function (data) { $('#Details').html('<h3>Error Fetching Data</h3>'); }
+            });
+    
+        }
+
+        function editMovie(EMovieId) {
+            $.ajax({
+                url: '@Url.Action("EditMovie")',
+                    data: { id: EMovieId },
+                    success: function (data) {
+                        $('#EM').hide();
+                        $('#EM').html(data);
+                        $('#EM').animate({
+                            height: "toggle"
+                        }, 2000);
+                        toastr.warning('Edit Movie Below');
+                        $('#SH').hide();
+                        $('#DM').hide();
+                    },
+                    error: function (data) { $('#Details').html('<h3>Error Fetching Data</h3>'); }
+            });
+        }
+        function deleteMovie(DMovieId) {
+            $.ajax({
+                url: '@Url.Action("DeleteMovie")',
+                data: { id: DMovieId },
+                success: function (data) {
+                    $('#DM').hide();
+                    $('#DM').html(data);
+                    $('#DM').animate({
+                        height: "toggle"
+                    }, 2000);
+                    toastr.error('Delete Movie Below');
+                    $('#SH').hide();
+                    $('#EM').hide();
+                },
+                error: function (data) { $('#Details').html('<h3>Error Fetching Data</h3>'); }
+            });
+        }
+        $(function() {
+            toastr.info('Movie List');
+        
+            var ctx = $("#genreSplit").get(0).getContext("2d");
+            var data = [
+                    {
+                        value: @(ViewBag.Action),
+                        color: "#FF8000",                 
+                        label: "Action"
+                    },
+                
+                    {
+                        value: @(ViewBag.Adventure),
+                        color: "#008000",
+                        label: "Adventure"
+                    },
+
+                    {
+                        value: @(ViewBag.Animation),
+                        color: "#0000ff",
+                        label: "Animation"
+                    },
+
+                    {
+                        value: @(ViewBag.Comedy),
+                        color: "#FF0000",
+                        label: "Comedy"
+                    },
+
+                    {
+                        value: @(ViewBag.Horror),
+                        color: "#000000",
+                        label: "Horror"
+                    },
+        ];
+        var options = {
+            //Boolean - Whether we should show a stroke on each segment
+            segmentShowStroke: true,
+
+            //String - The colour of each segment stroke
+            segmentStrokeColor: "#fff",
+
+            //Number - The width of each segment stroke
+            segmentStrokeWidth: 2,
+
+            //Number - The percentage of the chart that we cut out of the middle
+            percentageInnerCutout: 0, // This is 0 for Pie charts
+
+            //Number - Amount of animation steps
+            animationSteps: 100,
+
+            //String - Animation easing effect
+            animationEasing: "easeOutBounce",
+
+            //Boolean - Whether we animate the rotation of the Doughnut
+            animateRotate: true,
+
+            //Boolean - Whether we animate scaling the Doughnut from the centre
+            animateScale: false,
+
+            //String - A legend template
+            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+
+        };
+        var genrePie = new Chart(ctx).Pie(data, options);
+        });
+    </script>
+}

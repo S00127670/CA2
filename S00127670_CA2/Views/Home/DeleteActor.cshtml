@@ -1,0 +1,48 @@
+﻿@model S00127670_CA2.Models.Actor
+
+<div class="panel panel-danger">
+    <div class="panel-heading" style="font-size:20px">@ViewBag.DA</div>
+    
+    <div class="panel-body">
+        Are You Sure You Want To Delete This Actor?
+    </div>
+
+    <table class="table table-borderd table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.actorName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.actorRole)
+        </th>
+    </tr>
+
+         <tr>
+        <td>
+            @Html.DisplayFor(model => model.actorName)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.actorRole)
+        </td>
+    </tr>
+        
+        </table>
+    
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <div class="panel-footer">
+            <a class="btn btn-primary"href="@Url.Action("Index")"><span class="glyphicon glyphicon-home"></span>&nbsp;Movie List</a>
+            <button class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete</button>
+        </div>
+}
+    </div>
+
+@section scripts
+{
+    <script>
+        $(function() {
+            toastr.error('Delete Actor');
+        });
+    </script>
+}
+

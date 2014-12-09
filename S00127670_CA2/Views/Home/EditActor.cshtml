@@ -1,0 +1,44 @@
+﻿@model S00127670_CA2.Models.Actor
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+        <div class="panel panel-warning">
+    <div class="panel-heading" style="font-size:20px">@ViewBag.EA</div>
+
+            <div class="panel-body">
+        Edit Actor Details Below
+    </div>
+
+        @Html.HiddenFor(model => model.actorId)
+
+        <div class="row" style="padding:20px">
+            <div class="form-group col-xs-6">
+                @Html.LabelFor(model => model.actorName)
+                @Html.TextBoxFor(model => model.actorName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.actorName)
+                </div>
+            <div class="form-group col-xs-6">
+                @Html.LabelFor(model => model.actorRole)
+                @Html.TextBoxFor(model => model.actorRole, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.actorRole)
+                  </div>
+        </div>
+
+        <div class="panel-footer">
+            <a class="btn btn-primary"href="@Url.Action("Index")"><span class="glyphicon glyphicon-home"></span>&nbsp;Movie List</a>
+            <button class="btn btn-warning"><span class="glyphicon glyphicon-ok"></span>&nbsp;Save</button>
+        </div>
+            </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+            toastr.warning('Edit Actor');
+        });
+    </script>
+}

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<S00127670_CA2.Models.Actor>
+
+@if (Model.Any())
+{
+    <div class="panel panel-primary">
+    <div class="panel-heading" style="font-size:20px">@ViewBag.ActorTitle</div>
+
+        <div class="panel-body">
+            @ViewBag.AI
+    </div>
+    <table class="table table-borderd table-hover">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.actorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.actorRole)
+            </th>
+            <th></th>
+        </tr>
+
+        
+               @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.actorName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.actorRole)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "DetailsActor", new { id=item.actorId }, new { @class = "btn btn-info btn-sm" })
+                        @Html.ActionLink("Edit", "EditActor", new { id=item.actorId }, new { @class = "btn btn-warning btn-sm" })
+                        @Html.ActionLink("Delete", "DeleteActor", new { id = item.actorId }, new { @class = "btn btn-danger btn-sm" })
+                    </td>
+                </tr>
+            }
+        
+    </table>
+        <div class="panel-footer">
+            <a class="btn btn-primary"href="@Url.Action("Index")"><span class="glyphicon glyphicon-remove"></span>&nbsp;Close</a>
+          <a class="btn btn-success"href="@Url.Action("CreateActor")"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add Actor</a>
+    </div>
+        </div>
+    
+}
+else
+{<div><strong>No Actors In Movie</strong></div>
+    <div style="margin:10px"></div>
+    <a class="btn btn-success"href="@Url.Action("CreateActor")"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add Actor</a>
+    <div style="margin:10px"></div>
+}

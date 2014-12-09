@@ -1,0 +1,39 @@
+﻿@model S00127670_CA2.Models.Movie
+
+<div class="panel panel-danger">
+    <div class="panel-heading" style="font-size:20px">@ViewBag.DM</div>
+    
+    <div class="panel-body">
+        Are You Sure You Want To Delete This Movie?
+    </div>
+
+    <table class="table table-borderd table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.movieTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.movieGenre)
+        </th>
+    </tr>
+
+         <tr>
+        <td>
+            @Html.DisplayFor(model => model.movieTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.movieGenre)
+        </td>
+    </tr>
+
+        </table>
+   
+    @using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+ <div class="panel-footer">
+            <a class="btn btn-primary"href="@Url.Action("Index")"><span class="glyphicon glyphicon-remove"></span>&nbsp;Cancel</a>
+            <button class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete</button>
+        </div>
+}
+        </div>
+

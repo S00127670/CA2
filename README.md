@@ -2,7 +2,7 @@
 
 Created A ASP.NET MVC Application To Display Details Of Movies And The Actors In Them
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot.PNG)
 
 Final Commit:
 * Add, Edit & Delete Movies
